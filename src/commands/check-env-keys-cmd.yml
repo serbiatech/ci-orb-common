@@ -3,7 +3,8 @@ description: >
 parameters:
   envKeysForCheck:
     type: string
-    default: "\"DOCKERHUB_USERNAME\" \"DOCKERHUB_PASSWORD\""
+    #default: "\"DOCKERHUB_USERNAME\" \"DOCKERHUB_PASSWORD\""
+    default: "DOCKERHUB_USERNAME"
     description: "List of necessary keys"
 steps:
   - run:
