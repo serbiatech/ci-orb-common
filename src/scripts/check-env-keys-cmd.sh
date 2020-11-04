@@ -3,7 +3,10 @@
 ORB_TEST_ENV="bats-core"
 
 checkEnvKeys () {
-  for key in "${STECH_ENV_KEYS_FOR_CHECK[@]}"
+
+  read -r -a keys <<< "${STECH_ENV_KEYS_FOR_CHECK}"
+
+  for key in "${keys[@]}"
   do
     set -e
     if [ -z "${!key}" ]; then
