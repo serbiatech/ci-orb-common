@@ -17,9 +17,3 @@ checkEnvKeys () {
 if [ "${0#*$ORB_TEST_ENV}" == "$0" ]; then
     checkEnvKeys
 fi
-
-
-export STECH_ENV_KEYS_FOR_CHECK=("DOCKERHUB_USERNAME" "DOCKERHUB_PASSWORD")
-export DOCKERHUB_USERNAME="DOCKERHUB_USERNAME"
-
-checkEnvKeys
