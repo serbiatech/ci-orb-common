@@ -40,6 +40,7 @@ workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
+      - orb-common/check-env-keys-cmd
       - orb-tools/lint # Lint Yaml files
       - orb-tools/pack # Pack orb source
       - shellcheck/check:
