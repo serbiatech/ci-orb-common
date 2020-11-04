@@ -33,7 +33,7 @@ jobs:
       # This sample integration test will run as long as the greet command exists. Once you remove the greet command you should remove this line.
       # Push new changes first, before adding new tests to your config.
       - orb-common/greet
-      - orb-common/check-env-keys-cmd
+      #- orb-common/check-env-keys-cmd
 
 workflows:
   # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
