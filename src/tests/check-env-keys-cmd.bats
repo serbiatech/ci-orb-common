@@ -3,7 +3,7 @@
 setup() {
     export STECH_ENV_KEYS_FOR_CHECK="FIRST_TEST_KEY SECOND_TEST_KEY"
 
-    source ../scripts/check-env-keys-cmd.sh
+    source ./src/scripts/check-env-keys-cmd.sh
 }
 
 #teardown() {
