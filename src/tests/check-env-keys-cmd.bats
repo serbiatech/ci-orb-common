@@ -13,6 +13,7 @@ setup() {
     export STECH_ENV_KEYS_FOR_CHECK="FIRST_TEST_KEY SECOND_TEST_KEY"
 
     result=$(checkEnvKeys)
+    echo "$result"
     [ "$result" == "FIRST_TEST_KEY environment variable is not set." ]
 }
 
