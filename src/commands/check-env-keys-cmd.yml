@@ -10,4 +10,4 @@ steps:
       environment:
         STECH_ENV_KEYS_FOR_CHECK: <<parameters.envKeysForCheck>>
       name: Check for presence of necessary environment variables
-      command: <<include(scripts/check-env-keys-cmd.sh)>>
+      command: <<include(scripts/check-env-keys-cmd)>>
