@@ -33,6 +33,12 @@ jobs:
       # This sample integration test will run as long as the greet command exists. Once you remove the greet command you should remove this line.
       # Push new changes first, before adding new tests to your config.
       - orb-common/greet
+      - run:
+          name: Set env vars
+          command: |
+            export STECH_ENV_KEYS_FOR_CHECK="FIRST_TEST_KEY SECOND_TEST_KEY"
+            export FIRST_TEST_KEY="FIRST_TEST_KEY"
+            export SECOND_TEST_KEY="SECOND_TEST_KEY"
       - orb-common/check-env-keys-cmd
 
 workflows:
