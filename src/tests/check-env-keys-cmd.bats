@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 setup() {
-    source ./src/scripts/check-env-keys-cmd
+    source ../scripts/check-env-keys-cmd
 }
 
 #teardown() {
