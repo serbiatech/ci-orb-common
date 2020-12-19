@@ -1,0 +1,106 @@
+FROM alpine:latest
+
+MAINTAINER Nenad Stefanovic <stefanovic21@sbb.rs>
+
+# SYS: Set build arguments
+
+ARG MUSL_LOCPATH=/usr/share/i18n/locales/musl
+
+ARG USER_NAME=sphere-master
+
+ARG HOST_USER_ID
+
+ARG HOST_GROUP_ID
+
+ARG CONTAINER_LANGUAGE
+
+ARG CONTAINER_TIMEZONE
+
+# SYS: Set environments
+
+ENV USER=$USER_NAME
+
+ENV HOME /home/$USER
+
+ENV LANG=$CONTAINER_LANGUAGE
+
+ENV LANGUAGE=$CONTAINER_LANGUAGE
+
+ENV LC_ALL=$CONTAINER_LANGUAGE
+
+## SYS: Install required packages
+
+RUN apk update && \
+	apk --no-cache upgrade && \
+    apk add \
+    	autoconf \
+    	bash \
+    	cmake \
+    	curl \
+    	docker-cli \
+        g++ \
+    	gcc \
+    	gettext \
+        gettext-dev \
+    	make \
+    	musl-dev \
+    	shadow \
+    	tzdata
+
+RUN apk add --no-cache \
+    $MUSL_LOCALE_DEPS && \
+    wget https://gitlab.com/rilian-la-te/musl-locales/-/archive/master/musl-locales-master.zip && \
+    unzip musl-locales-master.zip && \
+    cd musl-locales-master && \
+    cmake -DLOCALE_PROFILE=OFF -D CMAKE_INSTALL_PREFIX:PATH=/usr . && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -r musl-locales-master
+
+RUN curl -fLSs https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh | bash
+
+# SYS: Set container timezone
+
+RUN ln -snf "/usr/share/zoneinfo/$CONTAINER_TIMEZONE" /etc/localtime && \
+    echo "$CONTAINER_TIMEZONE" > /etc/timezone
+
+# SYS: Remove /etc/dpkg that get's installed with $PHPIZE_DEPS
+
+RUN rm -rf /etc/dpkg
+
+# SYS: Add sphere-master user
+
+RUN adduser -D $USER && \
+    echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+
+# SYS: Set sphere-master user and group id
+
+RUN /bin/bash -c 'if [ -n $HOST_USER_ID ] && [ $HOST_USER_ID -lt 60000 ]; then \
+        usermod -u $HOST_USER_ID $USER; \
+    fi'
+
+RUN /bin/bash -c 'if [ -n $HOST_GROUP_ID ] && [ $HOST_GROUP_ID -lt 60000 ]; then \
+        groupmod -g $HOST_GROUP_ID $USER; \
+    fi'
+
+# SYS: Create docker group and add sphere-master to it
+
+RUN groupadd docker && \
+    usermod -aG docker $USER
+
+# SYS: Copy CircleCi config files
+
+COPY --chown=$USER:$USER files/.circleci $HOME/.circleci
+
+# SYS: Copy local execute script
+
+COPY --chown=$USER:$USER files/scripts/local-execute.sh $HOME/local-execute.sh
+
+# SYS: Set sphere-master as current user
+
+USER $USER
+
+# SYS: Change working dir
+
+WORKDIR $HOME/project

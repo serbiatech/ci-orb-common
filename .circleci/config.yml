@@ -33,13 +33,13 @@ jobs:
       # This sample integration test will run as long as the greet command exists. Once you remove the greet command you should remove this line.
       # Push new changes first, before adding new tests to your config.
       - orb-common/greet
-      - run:
-          name: Set env vars
-          command: |
-            export STECH_ENV_KEYS_FOR_CHECK="FIRST_TEST_KEY SECOND_TEST_KEY"
-            export FIRST_TEST_KEY="FIRST_TEST_KEY"
-            export SECOND_TEST_KEY="SECOND_TEST_KEY"
-      - orb-common/check-env-keys-cmd
+#      - run:
+#          name: Set env vars
+#          command: |
+#            export STECH_ENV_KEYS_FOR_CHECK="FIRST_TEST_KEY SECOND_TEST_KEY"
+#            export FIRST_TEST_KEY="FIRST_TEST_KEY"
+#            export SECOND_TEST_KEY="SECOND_TEST_KEY"
+#      - orb-common/environment-check
 
 workflows:
   # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
@@ -47,7 +47,9 @@ workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - orb-tools/lint # Lint Yaml files
+      - orb-tools/lint:
+          use-default-rules: true
+#          custom-rules-filepath: /tmp/_circleci_local_build_repo/.yamllint
       - orb-tools/pack # Pack orb source
       - shellcheck/check:
           dir: ./src/scripts

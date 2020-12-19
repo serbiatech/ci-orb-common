@@ -1,5 +1,5 @@
 description: >
-  This command checks for the presence of necessary environment variables.
+  This command checks for necessary environment variables
 parameters:
   envKeysForCheck:
     type: string
@@ -11,3 +11,4 @@ steps:
         STECH_ENV_KEYS_FOR_CHECK: <<parameters.envKeysForCheck>>
       name: Check for presence of necessary environment variables
       command: <<include(scripts/check-env-keys-cmd.sh)>>
+
