@@ -1,0 +1,15 @@
+description: >
+  This command checks for necessary environment variables
+parameters:
+  envKeysForCheck:
+    type: string
+    default: "DOCKERHUB_USERNAME DOCKERHUB_PASSWORD"
+    description: "List of necessary keys"
+steps:
+  - run:
+#      environment:
+#        STECH_ENV_KEYS_FOR_CHECK: <<parameters.envKeysForCheck>>
+      name: Check for presence of necessary environment variables
+      command: |
+          INCLUDE_SCRIPT=<<parameters.envKeysForCheck>>
+          <<include(scripts/environment-check.sh ${INCLUDE_SCRIPT})>>

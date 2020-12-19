@@ -5,7 +5,7 @@ orbs:
   orb-common: serbiatech/orb-common@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0
   bats: circleci/bats@1.0
-  shellcheck: circleci/shellcheck@2.0
+  shellcheck: circleci/shellcheck@2.2.2
 
 # Pipeline Parameters
 ## These parameters are used internally by orb-tools. Skip to the Jobs section.
@@ -33,6 +33,15 @@ jobs:
       # This sample integration test will run as long as the greet command exists. Once you remove the greet command you should remove this line.
       # Push new changes first, before adding new tests to your config.
       - orb-common/greet
+#      - orb-common/environment-check:
+#          envKeysForCheck: "FIRST_TEST_KEY"
+#      - run:
+#          name: Set env vars
+#          command: |
+#            export STECH_ENV_KEYS_FOR_CHECK="FIRST_TEST_KEY SECOND_TEST_KEY"
+#            export FIRST_TEST_KEY="FIRST_TEST_KEY"
+#            export SECOND_TEST_KEY="SECOND_TEST_KEY"
+#      - orb-common/environment-check
 
 workflows:
   # Prior to producing a development orb (which requires credentials) basic validation, linting, and even unit testing can be performed.
@@ -40,11 +49,19 @@ workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - orb-tools/lint # Lint Yaml files
+      - orb-tools/lint:
+          use-default-rules: true
+#          custom-rules-filepath: yamllint.yml
+          lint-dir: ./src
       - orb-tools/pack # Pack orb source
       - shellcheck/check:
           dir: ./src/scripts
           exclude: SC2148
+          pre-steps:
+            - run:
+                name: "Install git and SSH client"
+                command: |
+                  apk add --update --no-progress git openssh-client
       # optional: Run BATS tests against your scripts
       - bats/run:
           path: ./src/tests

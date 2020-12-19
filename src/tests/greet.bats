@@ -4,7 +4,7 @@ setup() {
     source ./src/scripts/greet.sh
 }
 
-@test '1: Greet the world' {
+@test 'Greet the world' {
     # Mock environment variables or functions by exporting them (after the script has been sourced)
     export PARAM_TO="World"
     # Capture the output of our "Greet" function
