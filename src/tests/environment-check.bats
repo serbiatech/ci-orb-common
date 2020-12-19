@@ -14,8 +14,8 @@ setup() {
 #}
 
 @test "Test first env variable isn't set" {
-    result=$(checkEnvKeys)
-    [ "$result" == "FIRST_TEST_KEY environment variable is not set." ]
+    result=$(checkEnvKeys "FIRST_TEST_KEY")
+    [ "$result" == "FIRST_TEST_KEY" ]
 }
 #
 #@test "Test second env variable isn't set" {

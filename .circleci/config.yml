@@ -33,6 +33,8 @@ jobs:
       # This sample integration test will run as long as the greet command exists. Once you remove the greet command you should remove this line.
       # Push new changes first, before adding new tests to your config.
       - orb-common/greet
+      - orb-common/environment-check:
+          envKeysForCheck: "FIRST_TEST_KEY"
 #      - run:
 #          name: Set env vars
 #          command: |
@@ -59,11 +61,7 @@ workflows:
             - run:
                 name: "Install git and SSH client"
                 command: |
-                  apk add \
-                      --update \
-                      --no-progress \
-                      git \
-                      openssh-client
+                  apk add --update --no-progress git openssh-client
       # optional: Run BATS tests against your scripts
       - bats/run:
           path: ./src/tests
