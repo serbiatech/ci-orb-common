@@ -2,7 +2,7 @@
 
 checkEnvKeys () {
 
-  echo ${STECH_ENV_KEYS_FOR_CHECK}
+  echo "${STECH_ENV_KEYS_FOR_CHECK}"
 
 #  read -r -a keys <<< "${STECH_ENV_KEYS_FOR_CHECK}"
 #
