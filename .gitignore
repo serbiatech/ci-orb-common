@@ -6,3 +6,4 @@ orb.yml
 
 # local_build_config.yml is generated config file for running jobs localy
 local_build_config.yml
+tmp_config.yml

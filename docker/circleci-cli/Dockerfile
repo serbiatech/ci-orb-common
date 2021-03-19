@@ -45,6 +45,7 @@ RUN apk update && \
     	make \
     	musl-dev \
     	shadow \
+    	sudo \
     	tzdata
 
 RUN apk add --no-cache \
@@ -84,14 +85,13 @@ RUN /bin/bash -c 'if [ -n $HOST_GROUP_ID ] && [ $HOST_GROUP_ID -lt 60000 ]; then
         groupmod -g $HOST_GROUP_ID $USER; \
     fi'
 
-# SYS: Create docker group and add sphere-master to it
-
-RUN groupadd docker && \
-    usermod -aG docker $USER
-
 # SYS: Copy CircleCi config files
 
 COPY --chown=$USER:$USER files/.circleci $HOME/.circleci
+
+# SYS: Copy startup script
+
+COPY --chown=$USER:$USER files/scripts/startup.sh $HOME/startup.sh
 
 # SYS: Copy local execute script
 
@@ -104,3 +104,7 @@ USER $USER
 # SYS: Change working dir
 
 WORKDIR $HOME/project
+
+# SYS: Trigger startup script
+
+CMD $HOME/startup.sh

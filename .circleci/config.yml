@@ -50,8 +50,8 @@ workflows:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
       - orb-tools/lint:
-          use-default-rules: true
-#          custom-rules-filepath: yamllint.yml
+          use-default-rules: false
+          custom-rules-filepath: .yamllint
           lint-dir: ./src
       - orb-tools/pack # Pack orb source
       - shellcheck/check:

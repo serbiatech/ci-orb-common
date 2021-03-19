@@ -18,7 +18,7 @@ services:
     networks:
       - common-orb-network
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:rw
       - ../:/home/sphere-master/project:rw
 
 networks:

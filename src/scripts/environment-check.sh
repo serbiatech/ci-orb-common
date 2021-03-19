@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
 
 checkEnvKeys () {
+  read -r -a keys <<< "${STECH_ENV_KEYS_FOR_CHECK}"
 
-  echo $1
-
-#  read -r -a keys <<< "${STECH_ENV_KEYS_FOR_CHECK}"
-#
-#  for key in "${keys[@]}"
-#  do
-#    set -e
-#    if [ -z "${!key}" ]; then
-#      echo "$key environment variable is not set."
-##      exit 1
-#    fi
-#  done
+  for key in "${keys[@]}"
+  do
+    set -e
+    if [ -z "${!key}" ]; then
+      echo "$key environment variable is not set."
+      exit 1
+    fi
+  done
 }
 
 # Will not run if sourced for bats-core tests.
